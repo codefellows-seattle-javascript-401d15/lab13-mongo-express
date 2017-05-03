@@ -1,12 +1,13 @@
 'use strict';
 
-const uuid = require('uuid/v4');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-module.exports = function(artist, title, year, dateCreated) {
-  if(!artist || !title || !year) throw new Error('Please enter a valid artist, title, and year');
-  this.artist = artist,
-  this.title = title,
-  this.year = year,
-  this.date = dateCreated || new Date();
-  this.id = uuid();
-};
+const albumEntry = Schema({
+  artist: {type: String, required: true},
+  title: {type: String, required: true},
+  year: {type: String, required: true},
+  dateCreated: {type: Date, default: Date.now},
+});
+
+module.exports = mongoose.model('album', albumEntry);
