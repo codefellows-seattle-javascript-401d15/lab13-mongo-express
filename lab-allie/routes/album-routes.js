@@ -4,13 +4,13 @@ const Album = require('../model/albums.js');
 
 module.exports = function(router) {
   router.get('/api/album/:id', (req, res) => {
-    if(!req.params.id) return res.status(400).send(err.message);
     
     Album.findById(req.params.id)
     .then(album => {
       console.log('album', album);
       res.json(album);
-    });
+    })
+    .catch(err => res.status(400).send(err.message));
   });
   
   router.post('/api/album', (req, res) => {
@@ -20,14 +20,12 @@ module.exports = function(router) {
   });
   
   router.put('/api/album/:id', (req, res) => {
-    if(!req.params.id) return res.status(400).send(err.message);
     Album.findOneAndUpdate(req.params.id, req.body, {new: true})
     .then(album => res.json(album))
     .catch(err => res.status(400).send(err.message));
   });
   
   router.delete('/api/album/:id', (req, res) => {
-    if(!req.params.id) return res.status(400).send(err.message);
     Album.deleteOne(req.params.id)
     .then(() => res.status(204).send())
     .catch(err => res.send(err));
