@@ -4,10 +4,11 @@ const Song = require('../model/song');
 const expect = require('chai').expect;
 
 describe('Song model', () => {
-  let newSong = new Song('wat', 'yo', 'up');
+  let newSong = new Song({title: 'wat', artist: 'yo',album: 'up'});
 
   it('should make a new song', done => {
-    expect(newSong.id).to.exist;
+    expect(newSong).to.exist;
+    console.log('newsong' + newSong);
     done();
   });
 

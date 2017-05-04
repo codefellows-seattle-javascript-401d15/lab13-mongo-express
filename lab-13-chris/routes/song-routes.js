@@ -18,7 +18,7 @@ module.exports = function(router) {
 
   router.get('/api/song', (req, res) => {
     debug('routes.get()');
-    console.log(req);
+    // console.log(req);
     if(!req.query.id) {
       Song.find()
       .then()
@@ -63,37 +63,4 @@ module.exports = function(router) {
       .catch(err => res.status(404).send(err.message));
     }
   });
-
-  // router.post('/api/song', (req, res) => {
-  //   debug('routes.post()');
-  //   let song = new Song(req.body.title, req.body.artist, req.body.album, req.body.id);
-  //
-  //   songCtrl.createItem('song', song)
-  //   .then(() => res.json(JSON.stringify(song)))
-  //   .catch(err => res.status(400).send(err.message));
-  // });
-  //
-  // router.get('/api/song/:id', (req, res) => {
-  //   debug('routes.get()');
-  //
-  //   songCtrl.fetchItem('song', req.params.id)
-  //   .then(data => res.json(data.toString()))
-  //   .catch(err => res.send(err));
-  // });
-  //
-  // router.put('/api/song', (req, res) => {
-  //   debug('routes.put()');
-  //
-  //   songCtrl.updateItem('song', req.query.id, req.body)
-  //   .then(data => res.json(data))
-  //   .catch(err => res.status(404).send(err.message));
-  // });
-  //
-  // router.delete('/api/song', (req, res) => {
-  //   debug('routes.delete()');
-  //
-  //   songCtrl.deleteItem('song', req.query.id)
-  //   .then(() => res.status(200).send(`The file with id: ${req.query.id} has been deleted`))
-  //   .catch(err => res.status(404).send(err.message));
-  // });
 };

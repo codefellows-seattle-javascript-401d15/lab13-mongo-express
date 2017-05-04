@@ -62,5 +62,5 @@ exports.deleteItem = function(schema, id) {
   if(!schema) return Promise.reject(createError(400, 'schema required'));
   if(!id) return Promise.reject(createError(400, 'id required'));
 
-  return fs.unlinkProm(`${DATA_URL}/${id}.json`);
+  // return fs.unlinkProm(`${DATA_URL}/${id}.json`);
 };
