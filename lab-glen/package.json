@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "debug": "^2.6.6",
     "mocha": "^3.3.0"
   }
 }
