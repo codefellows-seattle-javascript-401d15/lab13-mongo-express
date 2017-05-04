@@ -10,15 +10,15 @@ const PORT = process.env.PORT || 3000;
 const app = module.exports = express();
 const router = express.Router();
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/hawk';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/dbhawk';
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
+require('./routes/routes.js')(router);
 app.use(jsonParser);
 app.use(morgan('dev'));
 
-require('./routes/routes.js')(router);
 app.use(router);
 
 app.listen(PORT, () => console.log(`App listening on port: ${PORT}`));
