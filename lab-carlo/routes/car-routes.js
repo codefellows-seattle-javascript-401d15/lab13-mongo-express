@@ -1,12 +1,13 @@
 'use strict';
 
-const Car = require('../model/cars');
+const createError = require('http-errors');
+const carCtrl = require('../controller/car-controller');
 
 module.exports = function(router) {
 
   router.get('/api/cars:id', (req, res) =>  {
-    //if(!req.params.id) return res.status(400).send(newError('Bad request'));
-    Car.findById(req.params.id)
+    if(!req.params.id) return res.status(400).send(createError('Bad request'));
+    carCtrl.fetchCar(req.params.id)
     .then(car => {
       console.log(car);
       res.json(car);
@@ -19,8 +20,8 @@ module.exports = function(router) {
   //
   // });
   router.post('/api/cars', (req, res) =>  {
-    //if(!req.params.id) return res.status(400).send(newError('Bad request'));
-    new Car(req.body).save()
+    if(!req.params.id) return res.status(400).send(createError('Bad request'));
+    carCtrl.createCar(req.body).save()
     .then(car => {
       console.log(car);
       res.json(car);
