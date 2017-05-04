@@ -26,7 +26,10 @@ module.exports = function(router) {
     .catch(err => res.status(400).send(err.message));
   });
   
-  // router.delete('/api/album/:id', (req, res) => {
-    
-  // });
+  router.delete('/api/album/:id', (req, res) => {
+    if(!req.params.id) return res.status(400).send(err.message);
+    Album.deleteOne(req.params.id)
+    .then(() => res.status(204).send())
+    .catch(err => res.send(err));
+  });
 };
