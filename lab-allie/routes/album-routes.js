@@ -1,33 +1,41 @@
 'use strict';
 
 const Album = require('../model/albums.js');
+const albumCtrl = require('../controller/album-controller.js');
 
 module.exports = function(router) {
-  router.get('/api/album/:id', (req, res) => {
+  router.post('/api/album', (req, res) => {
+    let album = new Album(req.body);
     
-    Album.findById(req.params.id)
-    .then(album => {
-      console.log('album', album);
-      res.json(album);
-    })
-    .catch(err => res.status(400).send(err.message));
+    albumCtrl.createAlbum('album', album)
+    .then(album => res.json(JSON.stringify(album)))
+    .catch(err => res.end(err));
+    
+
   });
   
-  router.post('/api/album', (req, res) => {
-    new Album(req.body).save()
-    .then(album => res.json(album))
-    .catch(err => res.status(400).send(err.message));
+  router.get('/api/album/:id', (req, res) => {
+    albumCtrl.fetchAlbum('album', req.params.id)
+    .then(data => res.json(data.toString()))
+    .catch(err => res.send(err));
+  });
+
+  router.get('/api/album', (req, res) => {
+    albumCtrl.fetchAll('album')
+    .then(data => res.json(data.toString()))
+    .catch(err => res.send(err));
   });
   
   router.put('/api/album/:id', (req, res) => {
-    Album.findOneAndUpdate(req.params.id, req.body, {new: true})
-    .then(album => res.json(album))
-    .catch(err => res.status(400).send(err.message));
+    if(req.params.id) {
+      albumCtrl.updateAlbum('album', req.body, req.params.id)
+      .then(data => res.json(data))
+      .catch(err => res.status(404).send(err.message));
+    }
   });
   
   router.delete('/api/album/:id', (req, res) => {
-    Album.deleteOne(req.params.id)
-    .then(() => res.status(204).send())
+    albumCtrl.removeAlbum('album', req.params.id)
     .catch(err => res.send(err));
   });
 };
