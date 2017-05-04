@@ -1,0 +1,32 @@
+{
+  "name": "lab-davidw",
+  "version": "0.0.4",
+  "description": "single resource express/mongo api",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "lint": "eslint*/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidGWheeler/lab13-mongo-express.git"
+  },
+  "keywords": [
+    "TDD",
+    "BDD",
+    "express",
+    "mongodb",
+    "api"
+  ],
+  "author": "DavidGWheeler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavidGWheeler/lab13-mongo-express/issues"
+  },
+  "homepage": "https://github.com/DavidGWheeler/lab13-mongo-express#readme"
+}
