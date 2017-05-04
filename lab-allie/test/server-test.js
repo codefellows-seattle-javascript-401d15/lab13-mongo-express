@@ -121,16 +121,6 @@ describe('Server module tests', function() {
           done();
         });
       });
-        
-      it('should return an error on a bad request', done => {
-        chai.request(server)
-        .get('/api/album')
-        .end((err, res) => {
-          if (err) console.error(err);
-          expect(res.status).to.equal(404);
-          done();
-        });
-      });
       
       it('should be an object', done => {
         chai.request(server)
@@ -143,16 +133,24 @@ describe('Server module tests', function() {
         });
       });
     });
-        
-    describe('Error if not found', function() {
-      it('should respond with 404 if not found', done => {
-        chai.request(server)
-        .get('/')
-        .end((err, res) => {
-          if (err) console.error(err);
-          expect(res.status).to.equal(404);
-          done();
-        });
+    
+    it('should return an error on a bad request', done => {
+      chai.request(server)
+      .get('/api/album/blah')
+      .end((err, res) => {
+        if (err) console.error(err);
+        expect(res.status).to.equal(400);
+        done();
+      });
+    });
+    
+    it('should return an error if not found', done => {
+      chai.request(server)
+      .get('/')
+      .end((err, res) => {
+        if (err) console.error(err);
+        expect(res.status).to.equal(404);
+        done();
       });
     });
     
@@ -234,10 +232,20 @@ describe('Server module tests', function() {
           done();
         });
       });
-      
+
       it('should return an error on a bad request', done => {
         chai.request(server)
-        .get('/api/album')
+        .get('/api/album/blah')
+        .end((err, res) => {
+          if (err) console.error(err);
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+      
+      it('should return an error if not found', done => {
+        chai.request(server)
+        .get('/')
         .end((err, res) => {
           if (err) console.error(err);
           expect(res.status).to.equal(404);
@@ -270,7 +278,7 @@ describe('Server module tests', function() {
     describe('it should delete the item', function() {
       it('should successfully remove the name when provided an id', done => {
         chai.request(server)
-        .del(`/api/album?id=${testDelete}`)
+        .del(`/api/album/${testDelete}`)
         .end((err) => {
           if (err) console.error(err);
           expect(testDelete.artist).to.be.empty;
