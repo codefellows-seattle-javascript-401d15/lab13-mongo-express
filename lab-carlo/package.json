@@ -1,0 +1,17 @@
+{
+  "name": "lab-carlo",
+  "version": "1.0.0",
+  "description": "Class 13 lab",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "dbup": "",
+    "dbdown": ""
+
+  },
+  "author": "Carlo",
+  "license": "MIT"
+}
