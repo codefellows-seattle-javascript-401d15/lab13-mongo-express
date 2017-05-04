@@ -18,4 +18,15 @@ module.exports = function(router) {
     .then(album => res.json(album))
     .catch(err => res.status(400).send(err.message));
   });
+  
+  router.put('/api/album/:id', (req, res) => {
+    if(!req.params.id) return res.status(400).send(err.message);
+    Album.findOneAndUpdate(req.params.id, req.body, {new: true})
+    .then(album => res.json(album))
+    .catch(err => res.status(400).send(err.message));
+  });
+  
+  // router.delete('/api/album/:id', (req, res) => {
+    
+  // });
 };
