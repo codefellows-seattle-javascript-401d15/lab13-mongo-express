@@ -2,7 +2,7 @@
 
 const createError = require('http-errors');
 const Promise = require('bluebird');
-const Album = require('../model/album.js');
+const Album = require('../model/albums.js');
 
 module.exports = exports = {};
 
@@ -19,7 +19,6 @@ exports.fetchAlbum = function(id, res) {
   
   return Album.findById(id)
   .then(album => {
-    console.log('album', album);
     res.json(album);
   })
   .catch(err => res.status(400).send(err.message));
