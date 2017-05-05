@@ -5,7 +5,6 @@ const server = require('../server');
 const chai = require('chai');
 const http = require('chai-http');
 const expect = chai.expect;
-const Food = require('../model/food.js');
 
 chai.use(http);
 
