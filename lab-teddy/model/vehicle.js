@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const vehicItem = Schema({
-  name: {type: String, require: true},
-  detail: {type: String, max: 1048, require: true},
+  model: {type: String, required: true},
+  make: {type: String, required: true},
+  detail: {type: String, max: 1048, required: true},
   date: {type: Date, default: Date.now},
 });
 
