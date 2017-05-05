@@ -4,27 +4,34 @@ const Promise = require('bluebird');
 const createError = require('http-errors');
 const Vehicle = require('../model/vehicle');
 
-exports.createVehicle = function(vehicle){
-  if(!vehicle) return (new Error('Vehicle Required'));
+exports.createVehicle = function(vehicle, res){
+  if(!vehicle) return Promise.reject(createError(404, 'Paramaters not given'));
 
   return new Vehicle(vehicle).save()
-  .then(vehicle => Promise.resolve(vehicle))
-  .catch(() => Promise.reject(createError));
+  .then(vehicle => res.json(vehicle))
+  .catch((err) => res.status(404).send(err.message));
 };
 
-exports.fetchVehicle = function(id, vehicle){
-  if(!id) return (new Error('Schema Required'));
-  if(!vehicle) return (new Error('Vehicle Required'));
+exports.fetchVehicle = function(id, res){
+  if(!id) return Promise.reject(createError(404, 'ID Not Given'));
 
-  return Vehicle.find()
-  .then(vehicle => Promise.resolve(vehicle))
-  .catch(() => Promise.reject(createError));
+  return Vehicle.findById(id)
+  .then(vehicle => res.json(vehicle))
+  .catch((err) => res.status(404).send(err.message));
 };
 
 exports.updateVehicle = function(req, res, id){
-  if(!id) return (new Error('Schema Required'));
+  if(!id) return Promise.reject(createError(404, 'ID Not Given'));
 
   Vehicle.findOneAndUpdate(id, req.body, {new: true})
   .then(vehicle => res.json(vehicle))
   .catch(err => res.send(err));
+};
+
+exports.deleteVehicle = function (id, res){
+  if(!id) return Promise.reject(createError(404, 'ID Not Given'));
+
+  Vehicle.findByIdAndRemove(id)
+  .then(() => res.sendStatus(204))
+  .catch(err => res.status(404).send(err.message));
 };
