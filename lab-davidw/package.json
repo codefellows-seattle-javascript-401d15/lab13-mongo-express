@@ -10,7 +10,7 @@
     "test": "mocha",
     "start": "node server.js",
     "watch": "nodemon server.js",
-    "lint": "eslint*/**"
+    "lint": "eslint./**"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,17 @@
   "bugs": {
     "url": "https://github.com/DavidGWheeler/lab13-mongo-express/issues"
   },
-  "homepage": "https://github.com/DavidGWheeler/lab13-mongo-express#readme"
+  "homepage": "https://github.com/DavidGWheeler/lab13-mongo-express#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0"
+  }
 }

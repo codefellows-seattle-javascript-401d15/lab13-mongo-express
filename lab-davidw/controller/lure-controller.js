@@ -9,7 +9,7 @@ mongoose.Promise = Promise;
 module.exports = exports = {};
 
 
-exports.createItem = function(lure) {
+exports.createItem = function(req, res, lure) {
   if(!lure) return Promise.reject(createError(400, 'Bad request'));
 
   return Lure(lure).save();
