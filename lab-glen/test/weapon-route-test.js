@@ -1,4 +1,4 @@
-const Weapon = require('../model/weapon');
+const Blueprint = require('../model/blueprint');
 const chai = require('chai');
 const http = require('chai-http');
 const server = require('../server');
@@ -9,17 +9,27 @@ require('../server.js');
 chai.use(http);
 
 describe('Server function check', function () {
+  let tempBlueprint;
   let app;
+
   before(done => {
     app = server.listen(8000);
-    done();
-  });
-  after(done => {
-    app.close();
+    new Blueprint({name: 'test'}).save()
+    .then(temp => {
+      tempBlueprint = temp;
+    })
+    .catch(err => console.error(err.message));
     done();
   });
 
-  describe('POST method', function () {
+  after(done => {
+    app.close();
+    tempBlueprint.remove()
+    .then(() => done())
+    .catch(err => console.error(err.message));
+  });
+
+  describe('###WEAPON POST method', function () {
     describe('/api/weapon endpoint', function () {
       it('should respond with a 404 on bad request', done => {
         chai.request(server)
@@ -32,7 +42,7 @@ describe('Server function check', function () {
       });
       it('should respond with a 200 status on proper request', (done) => {
         chai.request(server)
-        .post('/api/weapon')
+        .post(`/api/blueprint/${tempBlueprint._id}/weapon`)
         .send({name: 'punisher', type: 'shotgun'})
         .end((err, res) => {
           if(err) console.error(err);
@@ -42,7 +52,7 @@ describe('Server function check', function () {
       });
       it('should return an item with correct properties', (done) => {
         chai.request(server)
-        .post('/api/weapon')
+        .post(`/api/blueprint/${tempBlueprint._id}/weapon`)
         .send({name: 'punisher', type: 'shotgun', price: 100})
         .end((err, res) => {
           if(err) console.error(err);
@@ -61,29 +71,13 @@ describe('Server function check', function () {
     });
   });
 
-  describe('GET method', function () {
-    let tempWeapon;
-    before(done => {
-      new Weapon({name : 'Glen', type: 'Pistol'}).save()
-      .then(weapon => {
-        tempWeapon = weapon;
-      })
-      .then(done)
-      .catch(err => console.log(err));
-    });
-    after(done => {
-      if(tempWeapon) {
-        Weapon.remove({})
-        .then(() => done())
-        .catch(done);
-      }
-    });
+  describe('###WEAPON GET method', function () {
 
     describe('/api/weapon endpoint', function () {
       describe('An incorrectly formatted request', function () {
         it('should return an error', done => {
           chai.request(server)
-        .get('/api/weapon/')
+        .get('/api/weapon/asdsad')
         .end((err, res) => {
           if(err) throw err;
           expect(res).to.have(err);
@@ -101,10 +95,10 @@ describe('Server function check', function () {
         });
       });
 
-      describe('A correctly formatted request', function () {
+      describe('A correct formatted request', function () {
         it('should return a 200 status', done => {
           chai.request(server)
-        .get(`/api/weapon/${tempWeapon._id}`)
+        .get(`/api/blueprint/${tempBlueprint._id}/weapon`)
         .end((err, res) => {
           if(err) throw err;
           expect(res.status).to.equal(200);
@@ -115,25 +109,8 @@ describe('Server function check', function () {
     });
   });
 
-  describe('DELETE method', function () {
-    let resource;
-    before(done => {
-      new Weapon({name : 'Glen', type: 'Pistol'}).save()
-      .then((weapon) => {
-        resource = weapon;
-      })
-      .then(done)
-      .catch(err => {
-        console.log(err);
-      });
-    });
-    after(done => {
-      if(resource) {
-        Weapon.remove({})
-        .then(() => done())
-        .catch(done);
-      }
-    });
+  describe('###WEAPON DELETE method', function () {
+
     describe('/api/weapon endpoint', function () {
       it('should respond with a 404 on bad request on endpoint', done => {
         chai.request(server)
@@ -146,7 +123,7 @@ describe('Server function check', function () {
       });
       it('should respond with a 200 on proper request', done => {
         chai.request(server)
-        .delete(`/api/weapon/${resource.id}`)
+        .delete(`/api/blueprint/${tempBlueprint._id}/weapon`)
         .send({})
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -156,23 +133,8 @@ describe('Server function check', function () {
     });
   });
 
-  describe('testing #PUT method', function () {
-    let tempWeapon;
-    before(done => {
-      new Weapon({name : 'Glen', type: 'Pistol'}).save()
-      .then(weapon => {
-        tempWeapon = weapon;
-      })
-      .then(done)
-      .catch(err => console.log(err));
-    });
-    after(done => {
-      if(tempWeapon) {
-        Weapon.remove({})
-        .then(() => done())
-        .catch(done);
-      }
-    });
+  describe('###WEAPON PUT method', function () {
+
     describe('/api/weapon endpoint', function () {
       it('should respond with a 404 on bad request', done => {
         chai.request(server)
@@ -184,9 +146,9 @@ describe('Server function check', function () {
         });
       });
       it('should respond with a 200 on proper request', done => {
-        let weaponUpdate = {name: 'Mr Wiggles', type: 'Bat'};
+        let weaponUpdate = {name: 'Mr Wiggles'};
         chai.request(server)
-        .put(`/api/weapon/${tempWeapon._id}`)
+        .put(`/api/blueprint/${tempBlueprint._id}/weapon`)
         .send(weaponUpdate)
         .end((err, res) => {
           if (err) return done (err.message);
@@ -199,7 +161,7 @@ describe('Server function check', function () {
       it('should update an item', done => {
         let weaponUpdate = {name: 'Mr Wiggles', type: 'Bat'};
         chai.request(server)
-        .put(`api/weapon/${tempWeapon._id}`)
+        .put(`api/blueprint/${tempBlueprint._id}/weapon`)
         .send({weaponUpdate})
         .end(() => {
           expect(weaponUpdate.name).to.equal('Mr Wiggles');

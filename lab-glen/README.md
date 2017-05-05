@@ -1,66 +1,45 @@
-![cf](https://i.imgur.com/7v5ASc8.png) lab 13 single resource express/mongo api
-======
+### Weapon Maker & Blueprint maker API
+This API generates a weapon & blueprint for you. Blueprint is the parent resource and weapon is the child resource. You MUST make a blueprint first, before you make a weapon.
 
-# To Submit this Assignment
-  * fork this repository
-  * write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-duncan`
-  * push to your repository
-  * submit a pull request to this repository
-  * submit a link to your PR in canvas
-  * write a question and observation on canvas
+### Directions for use
+1. In terminal, run
+```
+nodemon server.js
+```
 
-# Build Tool Instructions
-* create a package.json that lists all dependencies and developer dependencies
- * have a start and test npm script
-* include an .eslintrc
-* include a .gitignore
- * **add the string `db` to a new line in your gitignore file so that you don't include the db directory monogd is storing its files in!**
-* include any necessary NPM scripts
-  * have a lint script for running eslint
-  * have a test script for running mocha
-  * have a default script for running the lint and mocha tasks
-* a readme with a project description and api docs
+2. After nodemon is running, use the following commands for POST, GET, DELETE and PUT
 
-# Directions
-* Create these directories to organize your code:
- * db - use the command `mongod --dbpath ./db` to start mongod using this directory
- * lib
- * model
- * route
- * test
-* Create a HTTP Server using `express`
-* Create a **Model** that using `mongoose.Schema` and `mongoose.model`
- * The model can represent what ever data you choose. _e.g. note, blog post, store items_
-* use the `body-parser` express middleware to on `POST` and `PUT` routes
-<!-- * use the npm `debug` module to log the functions being executed in your app -->
-* using the express `Router` create a route for doing **RESTFUL CRUD** operations on your _Model_
+3. http POST localhost:3000/api/blueprint name="<name>" type="<type>"   
+```
+http POST localhost:3000/api/blueprint name="new name" type="new_type"
+```
 
-## Server Endpoints
-### `/api/model-name`
-* `POST` request
- * pass data as stringified json in the body of a post request to create a resource
+4. http GET localhost:3000/api/blueprint?id=(id)
+```
+http GET localhost:3000/api/blueprint?id=121231313123123
+```
 
-### `/api/model-name/:id`
-* `GET` request
- * pass the id of a resource though the url endpoint to `req.params` to fetch a model   
-* `PUT` request
- * pass data as stringified json in the body of a put request to update a resource
-* `DELETE` request
- * pass the id of a resource though the url endpoint to `req.params` to delete a model   
+5. http DELETE localhost:3000/api/blueprint?id=(id)
+```
+http DELETE localhost:3000/api/blueprint?id=121231313123123  
+```
 
-## Tests
-* your tests should start your server when they begin and stop your server when they finish
-* write a test to ensure that your api returns a status code of 404 for routes that have not been registered
-* write tests to ensure your `/api/model-name` endpoint responds as described for each condition below:
- * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
- * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
- * `PUT` - test 200, response body like  `{<data>}` for a post request with a valid body
- * `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
- * `PUT` - test 404, responds with 'not found' for valid request made with an id that was not found
- * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
- * `POST` - test 200, response body like  `{<data>}` for a post request with a valid body
- * `DELETE` - test 204, with no body, for a request with a valid id
- * `DELETE` - test 404, responds with 'not found' for valid request made with an id that was not found
+6. http PUT localhost:3000/api/blueprint?id=(id) name="<name>" type="<type>"
 
-## Bonus
-* **2pts** a `GET` request to `/api/model-name` should return an array of all stored resources for that model
+```
+http PUT localhost:3000/api/blueprint?id=121231313123123 name="new name" type="new_type"
+```
+
+7. After having Blueprints, you can make weapon children off of one
+
+8. http POST localhost:3000/api/blueprint/(blueprint ID here)/weapon
+```
+http POST localhost:3000/api/blueprint/123123123123/weapon name="new weapon name"
+```
+9. Follow the same template for GET, DELETE and PUT
+
+10. To run tests, run npm run test in terminal
+```
+npm run test
+
+```
