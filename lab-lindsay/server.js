@@ -1,15 +1,22 @@
 'use strict';
 
-const http = require('http');
-const Router = require('./lib/router');
-const storage = require('./lib/storage');
-const Candy = require('./model/candy');
-const debug = require('debug')('http:server');
+const express = require('express');
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const bodyParser = require('body-parser').json();
+
+const app = module.exports = express();
+const router = express.Router();
 const PORT = process.env.PORT || 3000;
 
-const router = new Router();
-const server = module.exports = http.createServer(router.route());
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/note-env';
 
-require('./routes/pokemon-routes');
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 
-server.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+require('./routes/candy-routes')(router);
+
+app.use(bodyParser);
+app.use(router);
+
+app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));

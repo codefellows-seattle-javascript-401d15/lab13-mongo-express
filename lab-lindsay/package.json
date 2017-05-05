@@ -12,7 +12,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "del": "^2.2.2",
-    "mocha": "^3.3.0"
+    "mocha": "^3.3.0",
+    "morgan": "^1.8.1",
+    "eslint": "^3.19.0",
+    "chai-http": "^3.0.0"
   },
   "scripts": {
     "test": "mocha",

@@ -1,9 +1,10 @@
 'use strict';
 
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const mkdirp = require('mkdirp-promise');
-const del = require('del');
+// const Promise = require('bluebird');
+// const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
+// const mkdirp = require('mkdirp-promise');
+// const del = require('del');
+const Candy = require('../model/candy')
 
 module.exports = exports = {};
 
