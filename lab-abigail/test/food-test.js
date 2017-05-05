@@ -5,6 +5,7 @@ const server = require('../server');
 const chai = require('chai');
 const http = require('chai-http');
 const expect = chai.expect;
+const Food = require('../model/food.js');
 
 chai.use(http);
 
@@ -116,7 +117,7 @@ describe('GET method', function() {
   });
   after(done => {
     chai.request(server)
-    .delete(`/api/food/${foodTest[0].id}`)
+    .delete(`/api/food/${foodTest[0]._id}`)
     .end(() => {
       done();
     });
@@ -124,9 +125,9 @@ describe('GET method', function() {
 
   describe('Verify route status and errors', function () {
     it('should return 200 status on proper request', done => {
+      console.log(foodTest[0]._id);
       chai.request(server)
-      .get(`/api/food/${foodTest[0].id}`)
-      .send({})
+      .get(`/api/food/${foodTest[0]._id}`)
       .end((err, res) => {
         if (err) console.error(err);
         expect(res.status).to.equal(200);
@@ -170,7 +171,7 @@ describe('PUT method', function() {
   });
   after(done => {
     chai.request(server)
-    .delete(`/api/food/${foodTest[0].id}`)
+    .delete(`/api/food/${foodTest[0]._id}`)
     .end(() => {
       done();
     });
@@ -180,7 +181,7 @@ describe('PUT method', function() {
 
     it('should change the food name and type', done => {
       chai.request(server)
-      .put(`/api/food/${foodTest[0].id}`)
+      .put(`/api/food/${foodTest[0]._id}`)
       .send({'name': 'banana', 'type': 'yellow'})
       .end((err, res) => {
         if (err) console.error(err);
@@ -191,7 +192,7 @@ describe('PUT method', function() {
 
     it('should respond with 200 on proper request', done => {
       chai.request(server)
-      .put(`/api/food/${foodTest[0].id}`)
+      .put(`/api/food/${foodTest[0]._id}`)
       .send({'name': 'banana', 'type': 'yellow'})
       .end((err, res) => {
         if (err) console.error(err);
@@ -226,21 +227,20 @@ describe('DELETE method', function() {
   });
   after(done => {
     chai.request(server)
-    .delete('/api/food')
-    .query({id: foodTest.id})
+    .delete(`/api/food/${foodTest[0]._id}`)
     .end(() => {
       done();
     });
   });
 
   describe('Verify route status and errors', function () {
-    it('should respond with 404 if requested file has been deleted', done => {
+    it('should respond with 204 if requested file has been deleted', done => {
       chai.request(server)
-      .delete(`/api/food/${foodTest[0].id}`)
+      .delete(`/api/food/${foodTest[0]._id}`)
       .send({})
       .end((err, res) => {
         if (err) console.error(err);
-        expect(res.status).to.equal(404);
+        expect(res.status).to.equal(204);
         done();
       });
     });
