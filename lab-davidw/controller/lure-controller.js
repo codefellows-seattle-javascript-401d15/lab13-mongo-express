@@ -38,8 +38,7 @@ exports.deleteItem = function(id, res) {
   if (!id) return Promise.reject(createError(400, 'bad request, id required'));
 
   return Lure.findByIdAndRemove(id)
-  .then(lure => {
-    console.log('Delete this lure: ', lure);
+  .then(() => {
     res.sendStatus(204);
   })
   .catch(err => res.status(404).send(err.message));

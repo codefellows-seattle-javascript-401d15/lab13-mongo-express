@@ -4,7 +4,7 @@ const Lure = require('../model/lure.js');
 const expect = require('chai').expect;
 
 describe('fishingLure module', function() {
-  let newLure = new Lure(name='momba', type='rattler', targets='trout');
+  let newLure = new Lure('momba', 'rattler', 'trout');
   describe('when adding a new fishing lure', function() {
     it('should have a string for the name, "momba"', done => {
       expect(newLure).to.have.property('name')

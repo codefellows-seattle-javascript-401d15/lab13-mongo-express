@@ -38,7 +38,7 @@ module.exports = function(router) {
     lureCtrl.updateItem(req, res, req.params.id, req.body);
   });
 
-  router.delete('api/lure/:id', (req, res) => {
+  router.delete('/api/lure/:id', (req, res) => {
     lureCtrl.deleteItem(req.params.id, res);
   });
 };

@@ -7,7 +7,7 @@ const bodyParser = require('body-parser').json();
 
 const app = module.exports = express();
 const router = express.Router();
-const PORT = process.env.PORT || 3080;
+const PORT = process.env.PORT || 3090;
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/lureEnv';
 
