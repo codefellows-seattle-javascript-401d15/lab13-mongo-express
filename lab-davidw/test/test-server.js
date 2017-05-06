@@ -15,7 +15,7 @@ chai.use(http);
 describe('server module', function() {
   let lures = [];
 
-  describe('#POST method', function() {
+  describe.only('#POST method', function() {
 
     describe('create a lure record', function() {
       it('should get a 200 response', done => {
