@@ -15,7 +15,7 @@ chai.use(http);
 describe('server module', function() {
   let lures = [];
 
-  describe.only('#POST method', function() {
+  describe('#POST method', function() {
 
     describe('create a lure record', function() {
       it('should get a 200 response', done => {
@@ -120,13 +120,14 @@ describe('server module', function() {
 
       it('should have response status of 200', done => {
         chai.request(server)
-          .put(`/api/lure/${lures[0].id}`)
-          .send({name: 'minnow', type: 'rattler', targets: 'trout'})
-          .end((err, res) => {
-            console.error(err);
-            expect(res).to.have.status(200);
-            done();
-          });
+        .put(`/api/lure/${lures[0]._id}`)
+        .send({name: 'minnow', type: 'rattler', targets: 'trout'})
+        .end((err, res) => {
+          console.log('lures array: ', lures[0]._id);
+          console.log('here is the status CODE: ', res.status);
+          expect(res).to.have.status(200);
+          done();
+        });
       });
 
       it('should have a response status of 404 if given bad or no schema', done => {
@@ -142,13 +143,13 @@ describe('server module', function() {
 
     it('should modify a specific record if given the correct inputs', done => {
       chai.request(server)
-          .put(`/api/lure/${lures[0].id}`)
-          .send({name: 'newString'})
-          .end((err, res) => {
-            // console.log('Here is the NAME of the id I am changing ', res.body.name);
-            expect(res.body.name).to.equal('newString');
-            done();
-          });
+        .put(`/api/lure/${lures[0]._id}`)
+        .send({name: 'newString'})
+        .end((err, res) => {
+          console.log('Here is the NAME of the id I am changing ', res.body.name);
+          expect(res.body.name).to.equal('newString');
+          done();
+        });
     });
   });
 
@@ -209,13 +210,14 @@ describe('server module', function() {
             done();
           });
         });
-        it('should return 200', done => {
+
+        it('should return 204', done => {
           chai.request(server)
             .delete(`/api/lure/${lures[0].id}`)
             .send({name: 'minnow', type: 'rattler', targets: 'trout'})
             .end((err, res) => {
               console.error(err);
-              expect(res).to.have.status(200);
+              expect(res).to.have.status(204);
               done();
             });
         });
