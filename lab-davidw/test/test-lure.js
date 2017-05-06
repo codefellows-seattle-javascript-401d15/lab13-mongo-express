@@ -1,10 +1,10 @@
 'use strict';
 
-const Lure = require('../model/lure.js');
+const Lure = require('../model/lure');
 const expect = require('chai').expect;
 
 describe('fishingLure module', function() {
-  let newLure = new Lure('momba', 'rattler', 'trout');
+  let newLure = new Lure({name: 'momba', type: 'rattler', targets: 'trout'});
   describe('when adding a new fishing lure', function() {
     it('should have a string for the name, "momba"', done => {
       expect(newLure).to.have.property('name')
@@ -30,7 +30,7 @@ describe('fishingLure module', function() {
       done();
     });
     it('should have an id of a unique uuid value', done => {
-      expect(newLure.id).to.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+      expect(newLure.id).to.match(/[0-9a-f]{24}/);
       done();
     });
   });
