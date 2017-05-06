@@ -13,7 +13,6 @@ module.exports = function(router) {
     });
   });
 
-//all
   router.get('/api/lure/', (req, res) => {
 
     lureCtrl.fetchAllItems()
@@ -23,7 +22,6 @@ module.exports = function(router) {
     .catch(err => res.status(404).send(err.message));
   });
 
-//one
   router.get('/api/lure/:id', (req, res) => {
 
     if(!req.params.id) return res.status(400).send(createError('Bad Request, id required.'));

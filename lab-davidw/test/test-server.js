@@ -170,7 +170,7 @@ describe('server module', function() {
       describe('a properly formatted request', function() {
         it('should return 200', done => {
           chai.request(server)
-            .get(`/api/lure/${lures[0].id}`)
+            .get(`/api/lure/${lures[0]._id}`)
             .send({name: 'minnow', type: 'rattler', targets: 'trout'})
             .end((err, res) => {
               console.error(err);
@@ -189,37 +189,48 @@ describe('server module', function() {
                 done();
               });
           });
+
           after(done => {
-            lures.forEach(lure => {
-              fs.unlinkProm(`${DATA_URL}/lure/${lure.id}.json`);
-            });
+            chai.request(server)
+            .delete('api/lure/killall')
+            .send('db.lures.drop()')
+            .end();
             done();
           });
-        });
-      });
 
-      describe('DELETE method', function() {
+          describe('DELETE method', function() {
 
-        before(done => {
-          chai.request(server)
-          .post('/api/lure')
-          .send({ name: 'test', type: 'rattler', targets: 'trout' })
-          .end((err, res) => {
-            let lure = JSON.parse(res.text);
-            lures.push(lure);
-            done();
-          });
-        });
-
-        it('should return 204', done => {
-          chai.request(server)
-            .delete(`/api/lure/${lures[0].id}`)
-            .send({name: 'minnow', type: 'rattler', targets: 'trout'})
-            .end((err, res) => {
-              console.error(err);
-              expect(res).to.have.status(204);
-              done();
+            before(done => {
+              chai.request(server)
+              .post('/api/lure')
+              .send({ name: 'test', type: 'rattler', targets: 'trout' })
+              .end((err, res) => {
+                let lure = JSON.parse(res.text);
+                lures.push(lure);
+                done();
+              });
             });
+
+            it('should return 204', done => {
+              chai.request(server)
+              .delete(`/api/lure/${lures[0]._id}`)
+              .send()
+              .end((err, res) => {
+                expect(res).to.have.status(204);
+                done();
+              });
+            });
+
+            it('should return 404 if given bad schema', done => {
+              chai.request(server)
+              .delete(`/api/boogers/${lures[0]._id}`)
+              .send()
+              .end((err, res) => {
+                expect(res).to.have.status(404);
+                done();
+              });
+            });
+          });
         });
       });
     });
