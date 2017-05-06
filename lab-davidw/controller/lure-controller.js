@@ -8,29 +8,39 @@ mongoose.Promise = Promise;
 
 module.exports = exports = {};
 
+exports.createItem = function(req) {
+  if(!req) return Promise.reject(createError(400, 'Bad request'));
 
-exports.createItem = function(req, res, lure) {
-  if(!lure) return Promise.reject(createError(400, 'Bad request'));
-
-  return Lure(lure).save();
+  return new Lure(req.body).save();
 };
 
 exports.fetchItem = function(id) {
-  if (!id) return Promise.reject(createError(400, 'id is required'));
+  if (!id) return Promise.reject(createError(400, 'Bad request, id required'));
 
   return Lure.findById(id);
 };
 
-exports.fetchItems = function() {
-  return Lure.find({});
+exports.fetchAllItems = function() {
+  return Lure.find();
 };
 
-exports.updateItem = function(id, lure) {
+exports.updateItem = function(req, res, id, lure) {
   if (!id || !lure) return Promise.reject(createError(400, 'bad request'));
+
+  return Lure.findByIdAndUpdate(id, lure, {new: true})
+  .then(lure => {
+    res.json(lure);
+  })
+  .catch(err => res.status(400).send(err.message));
 };
 
-exports.deleteItem = function(id) {
+exports.deleteItem = function(id, res) {
   if (!id) return Promise.reject(createError(400, 'bad request, id required'));
 
-  return Lure.findByIdAndRemove(id);
+  return Lure.findByIdAndRemove(id)
+  .then(lure => {
+    console.log('Delete this lure: ', lure);
+    res.sendStatus(204);
+  })
+  .catch(err => res.status(404).send(err.message));
 };
