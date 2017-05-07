@@ -18,6 +18,16 @@ describe('server module', function() {
     done();
   });
 
+  describe('invalid route', function(){
+    it('should respond with a 404 status code', done =>{
+      chai.request(server)
+      .get('/api/boats')
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+    });
+  });
 
   describe('POST method', function(){
     describe('/api/car post route' , function(){
@@ -43,7 +53,7 @@ describe('server module', function() {
 
       it('should return status 400 given the correct inputs', done =>{
         chai.request(server)
-        .post('/api/boats')
+        .post('/')
         .send({})
         .end((err, res)=>{
           expect(res.status).to.equal(404);
