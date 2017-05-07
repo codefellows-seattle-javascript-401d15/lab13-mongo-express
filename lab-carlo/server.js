@@ -4,9 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const bodyParser = require('body-parser').json();
-//const carRoutes = require('./routes/car-routes');
 
-const app = express();
+const app = module.exports = express();
 const router = express.Router();
 const PORT = process.env.PORT || 3000;
 
