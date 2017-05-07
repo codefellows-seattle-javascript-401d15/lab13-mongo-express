@@ -11,6 +11,11 @@ module.exports =function(router){
   router.get('/api/car/:id', (req, res)=>{
     carCtrl.fetchCar(req.params.id, res);
   });
+
+  router.get('/api/car', (req, res) =>{
+    carCtrl.getAllCars(res);
+  });
+
   router.delete('/api/car/:id', (req, res)=>{
     carCtrl.deleteCar(req.params.id, res);
   });

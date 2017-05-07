@@ -20,7 +20,6 @@ exports.fetchCar = function(id, res){
 
   Car.findById(id)
     .then(car=>{
-      console.log(car);
       res.json(car);
     })
     .catch(err => res.status(404).send(err.message));
@@ -44,5 +43,11 @@ exports.updateCar = function(req, res, id, car){
     console.log(car);
     res.json(car);
   })
+  .catch(err => res.status(400).send(err.message));
+};
+
+exports.getAllCars =function(res) {
+  return Car.find()
+  .then(car => res.json(car))
   .catch(err => res.status(400).send(err.message));
 };

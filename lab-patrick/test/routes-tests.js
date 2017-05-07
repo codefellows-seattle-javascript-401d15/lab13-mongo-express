@@ -3,47 +3,80 @@
 const server = require('../server');
 const chai = require('chai');
 const http = require('chai-http');
-const Promise =require('bluebird');
-const fs = Promise.promisifyAll(require('fs'), {suffix:'Prom'});
 const expect = chai.expect;
-
-
 
 chai.use(http);
 
 describe('server module', function() {
   let app;
   before(done => {
-    app = server.listen(8080);
+    app = server.listen(4000);
+    done();
+  });
+  after(done => {
+    app.close();
     done();
   });
 
+
+  describe('POST method', function(){
+    describe('/api/car post route' , function(){
+      it('should return posted car with correct inputs', done =>{
+        chai.request(server)
+        .post('/api/car')
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 1000})
+        .end((err, res)=>{
+          expect(res.body.name).to.equal('WRX');
+          done();
+        });
+      });
+
+      it('should return status 200 given the correct inputs', done =>{
+        chai.request(server)
+        .post('/api/car')
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 1000})
+        .end((err, res)=>{
+          expect(res.status).to.equal(200);
+          done();
+        });
+      });
+
+      it('should return status 400 given the correct inputs', done =>{
+        chai.request(server)
+        .post('/api/boats')
+        .send({})
+        .end((err, res)=>{
+          expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+  });
   describe('GET method', function() {
+    let testCar;
     describe('api/car routes', function(){
       let cars =[];
       before(done => {
         chai.request(server)
         .post('/api/car')
-        .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 1000})
         .end((err, res)=>{
-          let car = JSON.parse(res.body);
-          cars.push(car);
+          testCar = res.body;
+          cars.push(testCar);
           done();
         });
       });
       after(done =>{
-        cars.forEach(car => {
-          fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-        });
+        chai.request(server)
+        .delete(`/api/car/${cars[0]._id}`);
         done();
       });
-      describe ('Return car by Id', function(){
-        it.only('should return car given correct id', done =>{
+      describe('Return car by Id',function(){
+        it('should return car given correct id', done =>{
           chai.request(server)
-          .get(`/api/car/${cars[0].name}`)
+          .get(`/api/car/${cars[0]._id}`)
           .end((err, res) => {
-            let expected = JSON.parse(res.body);
-            expect(cars[0]).to.deep.equal(expected.name);
+            expect(cars[0]).to.deep.equal(res.body);
             done();
           });
         });
@@ -51,7 +84,7 @@ describe('server module', function() {
 
       it('should return status 200 if correct route', done =>{
         chai.request(server)
-        .get(`/api/car/${cars[0].id}`)
+        .get(`/api/car/${cars[0]._id}`)
         .end((err, res) =>{
           if(err) throw err;
           expect(res.status).to.equal(200);
@@ -70,134 +103,90 @@ describe('server module', function() {
     });
   });
 
-  describe('PUT method', function(){
-    let cars =[];
-    before(done => {
-      chai.request(server)
-      .post('/api/car/')
-      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-      .end((err, res)=>{
-        let car = JSON.parse(res.body);
-        cars.push(car);
-        done();
-      });
-    });
-    after(done =>{
-      cars.forEach(car => {
-        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-      });
-      done();
-    });
-    describe('requests made to /api/car', function(){
-      it('should have a response status of 200', done =>{
+  describe('DELETE method', function(){
+    let testCar;
+    describe('api/car routes', function(){
+      let cars =[];
+      before(done => {
         chai.request(server)
-        .put('api/car/')
-        .send({id: cars[0].id, name: cars[0].name, model: cars[0].model, horsepower: cars[0].horsepower})
-        .end((err, res) => {
-          expect(res).to.have.status(200);
+        .post('/api/car')
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 1000})
+        .end((err, res)=>{
+          testCar = res.body;
+          cars.push(testCar);
+          done();
         });
+      });
+      after(done =>{
         done();
       });
-      it('should have a response ststus of 404 given no id', done =>{
-        chai.request(server)
-        .put('api/car/')
-        .send({})
-        .end((err, res) => {
-          expect(res).to.have.status(400);
+      describe('delete request made to /api/car by id', function(){
+        it('should have a response status of 200 if successful', done =>{
+          chai.request(server)
+          .delete(`/api/car/${cars[0]._id}`)
+          .end((err, res) => {
+            expect(res).to.have.status(204);
+            done();
+          });
         });
-        done();
-      });
-      it('should modify a record given correct inputs', done =>{
-        chai.request(server)
-        .put('/api/car/')
-        .send({id: cars[0].id, name: 'foobar'})
-        .end((err, res) => {
-          expect(res.body.name).to.equal('foobar');
+        it('should have a response ststus of 404 given no id', done =>{
+          chai.request(server)
+          .delete('api/car/')
+          .send({})
+          .end((err, res) => {
+            expect(res).to.have.status(400);
+          });
           done();
         });
       });
     });
-    describe('requests made to invalid route', function(){
-
-    });
   });
-
-  describe('POST method', function(){
-
-    it('should have a response ststus of 404 give incorrct inputs', done =>{
-      chai.request(server)
-      .put('api/car/')
-      .send({})
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-      });
-      done();
-    });
-    it('should return posted car given the correct inputs', done =>{
-      chai.request(server)
-      .post('/api/car/')
-      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-      .end((err, res) => {
-        let car = JSON.parse(res.body);
-        expect(car.name).to.deep.equal('WRX');
-        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-        done();
-      });
-    });
-    it('should return status 200 given the correct inputs', done =>{
-      chai.request(server)
-      .post('/api/car/')
-      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-      .end((err, res) => {
-        let car = JSON.parse(res.body);
-        expect(res).to.have.status(200);
-        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-        done();
-      });
-    });
-  });
-
-  describe('DELETE method', function(){
-    let cars =[];
-    before(done => {
-      chai.request(server)
-      .post('/api/car/')
-      .send({'name': 'WRX', 'model': 'Subaru', 'horserpower': 200})
-      .end((err, res)=>{
-        let car = JSON.parse(res.body);
-        cars.push(car);
-        done();
-      });
-    });
-    after(done =>{
-      cars.forEach(car => {
-        fs.unlinkProm(`${__dirname}/../data/car/${car.id}.json`);
-      });
-      done();
-    });
-    describe('delete request made to /api/car by id', function(){
-      it('should have a response status of 200 if successful', done =>{
+  describe('PUT method', function(){
+    let testCar;
+    describe('api/car PUT routes', function(){
+      let cars =[];
+      before(done => {
         chai.request(server)
-        .delete('api/car/')
-        .send({id: cars[0].id})
-        .end((err, res) => {
-          expect(res).to.have.status(200);
+        .post('/api/car')
+        .send({'name': 'WRX', 'model': 'Subaru', 'horsepower': 1000})
+        .end((err, res)=>{
+          testCar = res.body;
+          cars.push(testCar);
+          done();
         });
+      });
+      after(done =>{
         done();
       });
-      it('should have a response ststus of 404 given no id', done =>{
-        chai.request(server)
-        .delete('api/car/')
-        .send({})
-        .end((err, res) => {
-          expect(res).to.have.status(400);
+      describe('delete request made to /api/car by id', function(){
+        it('should have a response status of 200 if successful', done =>{
+          chai.request(server)
+          .put(`/api/car/${cars[0]._id}`)
+          .send({name : 'burrito'})
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            done();
+          });
         });
-        done();
+        it('should have a response status of 200 if successful', done =>{
+          chai.request(server)
+          .put(`/api/car/${cars[0]._id}`)
+          .send({name : 'burrito'})
+          .end((err, res) => {
+            expect(res.body.name).to.equal('burrito');
+            done();
+          });
+        });
+        it('should have a response ststus of 404 given no id', done =>{
+          chai.request(server)
+          .delete('api/car/')
+          .send({})
+          .end((err, res) => {
+            expect(res).to.have.status(400);
+          });
+          done();
+        });
       });
-    });
-    after(done => {
-      app.close();
-      done();
     });
   });
 });
