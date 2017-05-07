@@ -24,6 +24,7 @@ To get a car by id, enter
 http GET :3000/api/car/0023320c-678c-47f7-9b75-a1a43025e42b
 ```
 where 0023320c-678c-47f7-9b75-a1a43025e42b is the cars Id
+
 To get all cars stored in the cars database, simply enter 
 ```
 http GET :3000/api/car
