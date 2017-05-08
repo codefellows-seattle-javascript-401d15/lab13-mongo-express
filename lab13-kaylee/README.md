@@ -1,68 +1,77 @@
-## Lab-09: Single-Resource API with FS Persistence
+## Lab 13: MongoDB with Express
 
 ## About This Project
 
-* Build an HTTP server using the 'http' Node module.
-* Create an Object constructor used to produce instances of a resource.
-* Create a Router constructor to manage GET, POST, PUT and DELETE requests to the server.
-* Implement file system (FS) persistence
+* Build an HTTP server using the Express Node module.
+* Create an Object (Dog) constructor used to produce instances of a resource.
+* Create a controller to manage GET, POST, PUT and DELETE requests to the server.
+* Perform GET, POST, PUT, and DELETE operations on Dog records in Mongo DB.
 
 ## Project Dependencies
 
-* chai, chai-http, debug, bluebird, fs and uuid
-* To install:
-  * npm chai
-  * npm chai-http
-  * npm debug
-  * npm bluebird
-  * npm fs
-  * npm uuid
+* npm bluebird
+* npm body-parser
+* npm chai
+* npm chai-http
+* npm eslint
+* npm express
+* npm mongoose
+* npm morgan
 
 ## Developer Dependencies
 
-* mocha
-* To install:
-  * npm mocha
+* npm mocha
 
 ## Making Requests
 
 * Example GET request
-  * In terminal (assuming httPie installed): http get :3000/api/note?id=<some uuid>
+  * In terminal (assuming httPie installed): http get :3000/api/dog/someID
   * Expected output:
     {
-      "date": "April 30",
-      "id": "<some uuid>",
-      "name": "ToDo"
+      "__v": 0,
+      "_id": "someID",
+      "breed": "requestedBreed",
+      "name": "requestedName"
     }
   * Expected status code: 200
 
 * Example POST request
-  * In terminal (assuming httPie installed): http post :3000/api/note name="Groceries" date="April 20"
+  * In terminal (assuming httPie installed): http post :3000/api/dog name="Joe Joe" breed="bichon frise"
   * Expected output:
     {
-      "date": "April 20",
-      "id": "<some uuid>",
-      "name": "Groceries"
+      "__v": 0,
+      "_id": "someID",
+      "breed": "bichon frise",
+      "name": "Joe Joe"
     }
-  * Expected status code: 201
+  * Expected status code: 200
+  * Should populate Mongo DB with new Dog record
 
 * Example PUT request
-  * In terminal (assuming httPie installed): http put :3000/api/note?id=<some uuid> name="newName" date="newDate"
+  * In terminal (assuming httPie installed): http put :3000/api/dog/someID name="newName" breed="newBreed"
   * Expected output:
     {
-      "date": "newDate",
-      "id": "<some uuid>",
+      "__v": 0,
+      "_id": "someID",
+      "breed": "newBreed",
       "name": "newName"
     }
-  * Expected status code: 202
-
+  * Expected status code: 200
+  * Should update existing Dog record (as specified by ID) in Mongo DB with new name and breed properties
 
 * Example DELETE request
-  * In terminal (assuming httPie installed): http delete :3000/api/note?id=<some uuid>
-  * Expected output: none
-  * Expected status code: 204
+  * In terminal (assuming httPie installed): http delete :3000/api/dog/someID
+  * Expected output:
+  {
+    "__v": 0,
+    "_id": "someID",
+    "breed": "deletedBreed",
+    "name": "deletedName"
+  }
 
+  * Expected status code: 200
+  * Should delete Dog record (as specified by ID) from Mongo DB
 
 ## Biggest Roadblocks
 
-* The PUT method in storage.js!
+* Integration tests-- figuring out how to refactor tests from previous lab to accommodate for MongoDB's "_id" property (vs. uuid's plain "id" property).
