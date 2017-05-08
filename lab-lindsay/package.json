@@ -1,0 +1,44 @@
+{
+  "name": "lab-11-lindsay",
+  "version": "1.0.0",
+  "description": "lab-11-express-api",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
+    "mocha": "^3.3.0",
+    "morgan": "^1.8.1",
+    "eslint": "^3.19.0",
+    "chai-http": "^3.0.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "dbup": "",
+    "dbdown": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindsgil/lab-11-express-api.git"
+  },
+  "keywords": [
+    "lab-11"
+  ],
+  "author": "lindsay gilbert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lindsgil/lab-11-express-api/issues"
+  },
+  "homepage": "https://github.com/lindsgil/lab-11-express-api#readme"
+}

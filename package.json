@@ -1,0 +1,32 @@
+{
+  "name": "lab-13-mongo-express-lindsay",
+  "version": "1.0.0",
+  "description": "lab-13 mongodb lindsay",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "bluebird": "^3.5.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "express": "^4.15.2",
+    "http-errors": "^1.6.1",
+    "mongoose": "^4.9.7",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.3.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindsgil/lab13-mongo-express.git"
+  },
+  "author": "lindsay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lindsgil/lab13-mongo-express/issues"
+  },
+  "homepage": "https://github.com/lindsgil/lab13-mongo-express#readme"
+}
