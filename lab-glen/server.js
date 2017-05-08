@@ -17,7 +17,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/weapon-env';
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
-//routes
+//required routes 
 require('./route/weapon-routes')(router);
 require('./route/blueprint-routes')(router);
 
