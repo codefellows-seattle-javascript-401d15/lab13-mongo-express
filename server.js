@@ -9,7 +9,7 @@ const app = module.exports = express();
 const router = express.Router();
 const PORT = process.env.PORT || 3000;
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/note-env';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/ninja-env';
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
@@ -19,4 +19,4 @@ require('./routes/ninja-routes')(router);
 app.use(bodyParser);
 app.use(router);
 
-app.listen(PORT, () => console.log(`Listening on da port: ${PORT}`));
+app.listen(PORT, () => console.log(`Making port: ${PORT} great again!`));
