@@ -1,4 +1,4 @@
-# ignore db directories
+# ignore db directorys
 db
 
 # Created by https://www.gitignore.io/api/linux,node,osx,vim

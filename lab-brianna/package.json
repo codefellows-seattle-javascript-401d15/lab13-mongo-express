@@ -1,0 +1,38 @@
+{
+  "name": "lab-brianna",
+  "version": "1.0.0",
+  "description": "This is a lab assignment for Code Fellows Full-Stack JS course.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "dbup": "",
+    "dpdown": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brisourceful/lab13-mongo-express.git"
+  },
+  "keywords": [
+    "node",
+    "mongo"
+  ],
+  "author": "Brianna Burrows",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brisourceful/lab13-mongo-express/issues"
+  },
+  "homepage": "https://github.com/brisourceful/lab13-mongo-express#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.7"
+  },
+  "devDependencies": {
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0"
+  }
+}

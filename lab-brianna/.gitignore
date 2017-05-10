@@ -1,4 +1,4 @@
-# ignore db directories
+# ignore db directorys
 db
 
 # Created by https://www.gitignore.io/api/linux,node,osx,vim
@@ -96,3 +96,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+# Mongodb
+'db'

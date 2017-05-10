@@ -1,0 +1,38 @@
+{
+  "name": "mongo-express",
+  "version": "0.0.1",
+  "description": "lab 13",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint ./server.js",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
+    "build": "npm run lint && npm run test"
+  },
+  "keywords": [
+    "mongodb",
+    "node",
+    "express"
+  ],
+  "author": "Cameron Bacon",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "http-errors": "^1.6.1",
+    "mongoose": "^4.9.7"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "^2.6.6",
+    "eslint": "^3.19.0",
+    "mocha": "^3.3.0",
+    "morgan": "^1.8.1"
+  }
+}
