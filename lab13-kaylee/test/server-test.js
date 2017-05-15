@@ -18,12 +18,12 @@ describe('server module', function() {
     done();
   });
 
-  describe.only('GET method', function() {
+  describe('GET method', function() {
     let getResource;
     before(done => {
       chai.request(server)
       .post('/api/dog')
-      .send({name: 'Kaylee', date: 'April 15, 2017'})
+      .send({name: 'Fido', breed: 'bulldog'})
       .end((err, res) => {
         getResource = JSON.parse(res.text.toString());
         done();
@@ -65,7 +65,7 @@ describe('server module', function() {
       it('should return a 200 status code given a valid body', done => {
         chai.request(server)
         .post('/api/dog')
-        .send({name: 'Kaylee', date: 'April 16, 2017'})
+        .send({name: 'Joey', breed: 'bichon'})
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(200);
@@ -92,7 +92,7 @@ describe('server module', function() {
     before(done => {
       chai.request(server)
       .post('/api/dog/')
-      .send({name: 'Kaylee', date: 'April 17, 2017'})
+      .send({name: 'Bruce', breed: 'doberman'})
       .end((err, res) => {
         putResource = JSON.parse(res.text.toString());
         done();
@@ -108,8 +108,8 @@ describe('server module', function() {
     describe('a properly formatted request', function() {
       it('should return a 200 status code given a valid id', done => {
         chai.request(server)
-        .put(`/api/dog/${putResource.id}`)
-        .send({name: 'Kaylee', date: 'April 18, 2017'})
+        .put(`/api/dog/${putResource._id}`)
+        .send({name: 'Skip', breed: 'dauchsund'})
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(200);
@@ -118,25 +118,25 @@ describe('server module', function() {
       });
     });
     describe('an improperly formatted request', function() {
-      it('should return a 400 status code if given an invalid body or no body provided', done => {
+      it('should return a 404 status code if given an invalid id', done => {
         chai.request(server)
-        .get(`/api/dog/${putResource.id}`)
-        .send({})
+        .put(`/api/dog/badId`)
+        .send({name: 'Buddy', breed: 'lab'})
         .end((err, res) => {
           if(err) console.error(err);
-          expect(res.status).to.equal(400);
+          expect(res.status).to.equal(404);
           done();
         });
       });
     });
   });
 
-  describe.only('DELETE method', function() {
+  describe('DELETE method', function() {
     let deleteResource;
     before(done => {
       chai.request(server)
       .post('/api/dog')
-      .send({name: 'Kaylee', date: 'April 20, 2017'})
+      .send({name: 'Max', breed: 'westie'})
       .end((err, res) => {
         deleteResource = JSON.parse(res.text.toString());
         done();
@@ -144,7 +144,7 @@ describe('server module', function() {
     });
     after(done => {
       chai.request(server)
-      .delete(`/api/dog/${deleteResource.id}`)
+      .delete(`/api/dog/${deleteResource._id}`)
       .end(() => {
         done();
       });
@@ -152,7 +152,7 @@ describe('server module', function() {
     describe('a properly formatted request', function() {
       it('should return a 200 status code given a proper id', done => {
         chai.request(server)
-        .delete(`/api/dog/${deleteResource.id}`)
+        .delete(`/api/dog/${deleteResource._id}`)
         .end((err, res) => {
           if(err) console.error(err);
           expect(res.status).to.equal(200);

@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 
 describe('dog module', function() {
   describe('when creating a new Dog object', function() {
-    let newDog = new Dog('Joe Joe', 'bichon frise');
+    let newDog = new Dog({name: 'Joe Joe', breed: 'bichon frise'});
     it('should have a name of "Joe Joe"', done => {
       expect(newDog.name).to.equal('Joe Joe');
       done();
