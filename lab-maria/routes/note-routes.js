@@ -1,8 +1,9 @@
 'use strict';
 const Note = require('../model/deathnote');
+const List = require('../model/list');
 
 module.exports = function(router) {
-  router.get('/api/note/:id', (req, res) => {
+  router.get('/note/:id', (req, res) => {
     Note.findById(req.params.id)
       .then(note => {
         if(note.length === 0) err => res.status(404).send(err.message);
@@ -11,20 +12,19 @@ module.exports = function(router) {
       .catch(err => res.status(404).send(err.message));
   });
 
-  router.get('/api/note', (req, res) => {
+  router.get('/note', (req, res) => {
     return Note.find()
       .then(note => res.json(note))
       .catch(err => res.status(404).send(err.message));
   });
 
-  router.post('/api/note', (req, res) => {
-    new Note (req.body).save()
+  router.post('/list/:id/note', (req, res) => {
+    List.findByIdAndAddNote(req.params.listId, req.body)
       .then(note => res.json(note))
-      .catch(err => res.status(500).send(err.message));
-
+      .catch(err => res.json(404).send(err.message));
   });
 
-  router.put('/api/note/:id', (req, res) => {
+  router.put('/note/:id', (req, res) => {
     if(req.params.id) {
       Note.findById(req.params.id, function(err, note) {
         if(err) res.status(500).send(err.message);
@@ -38,10 +38,12 @@ module.exports = function(router) {
     }
   });
 
-  router.delete('/api/note/:id', (req, res) => {
+  router.delete('/note/:id', (req, res) => {
     if(!req.params.id) err => res.status(500).send(err.message);
     Note.findByIdAndRemove(req.params.id)
       .then(res.sendStatus(200))
       .catch(err => res.status(500).send(err.message));
   });
+
+  return router;
 };
