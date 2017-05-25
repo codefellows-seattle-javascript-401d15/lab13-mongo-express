@@ -3,9 +3,7 @@ Small Node.js App for Codefellows Coding Bootcamp.
 
 Keep *Even Better* track of your DeathNotes and their Death Gods using MONGOdb!
 
-
 ##Installation:
-
 1. clone this repository and ``cd`` into it
 2. run ``npm i``
 
