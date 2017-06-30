@@ -11,7 +11,6 @@ module.exports = function(router) {
   });
 
   router.post('/api/vehicle', (req, res) => {
-    console.log(req.body, 'this is the post route');
     carController.createVehicle(req.body, res);
   });
 
